@@ -1,0 +1,54 @@
+
+.team_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    width: 90%;
+    max-width: 1200px;
+    box-sizing: border-box;
+}
+
+.team_member {
+    background: #1a1a1a;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.member_icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    background-image: linear-gradient(to right, #404040, #262626);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.member_initials {
+    font-size: 30px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.member_details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.member_name {
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.member_role {
+    font-size: 14px;
+    color: #9a9a9a;
+}
+

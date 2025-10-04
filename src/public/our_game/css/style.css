@@ -1,0 +1,36 @@
+
+.about_game_container, .game_media_container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 90%;
+    max-width: 800px;
+    box-sizing: border-box;
+    gap: 20px;
+}
+
+.about_game_title, .game_media_title {
+    font-size: 24px;
+    color: #ffffff;
+    font-weight: bold;
+    text-indent: 20px;
+}
+
+.about_game_description {
+    font-size: 16px;
+    color: #d0d0d0;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.media_gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.media_image {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+}
