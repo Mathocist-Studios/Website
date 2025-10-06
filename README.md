@@ -43,8 +43,9 @@ npm install npm@latest -g
 git clone https://github.com/Mathocist-Studios/Webiste.git
 ```
 
-2. Install Dependencies
+2. Setup Project and Install Dependencies
 ```sh
+node init
 npm install axios body-parser cookie-parser cors dotenv ejs express express-validator express-rate-limit helmet html morgan uuid
 ```
 
