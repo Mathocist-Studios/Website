@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path_lib = require('path');
 const fs = require('fs');
+const rateLimit = require('express-rate-limit');
 
 const request_handlers = require('./request');
 const logger = require('./logging');
@@ -16,7 +17,8 @@ logger.init("./logs");
 
 // load handlers
 let page_req_handlers_path = path_lib.join(__dirname, "RequestHandlers/Pages");
-let files = fs.readdirSync(page_req_handlers_path);
+let api_req_handlers_path = path_lib.join(__dirname, "RequestHandlers/API");
+let files = fs.readdirSync(page_req_handlers_path).concat(fs.readdirSync(api_req_handlers_path));
 files = files.filter(f => f.endsWith('.js'));
 let amount_imported = 0;
 fs.readdirSync(page_req_handlers_path).forEach((f) => {
@@ -25,6 +27,13 @@ fs.readdirSync(page_req_handlers_path).forEach((f) => {
     amount_imported++;
     logger.push_log("Loaded page request handler: " + f);
     console.log("Loaded page request handler: " + f + " (" + amount_imported + "/" + files.length + ")");
+});
+fs.readdirSync(api_req_handlers_path).forEach((f) => {
+    if (!f.endsWith(".js")) return;
+    require("./RequestHandlers/API/" + f);
+    amount_imported++;
+    logger.push_log("Loaded API request handler: " + f);
+    console.log("Loaded API request handler: " + f + " (" + amount_imported + "/" + files.length + ")");
 });
 
 // Set port
@@ -67,6 +76,14 @@ app.use((req, res, next) => {
     });
     next();
 });
+
+// add rate limiting to contact post request
+const contactLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 requests per windowMs
+    message: "Too many requests from this IP, please try again after 15 minutes"
+});
+app.use("/api/v1/contact", contactLimiter);
 
 function verifyParams(params) {
     for (let i = 0; i < params.length; i++) {
@@ -111,7 +128,7 @@ for (let i = 0; i < request_handlers.getRegisteredRequests().length; i++) {
 }
 
 // setup 404
-app.use(function(req, res, next) {
+app.use(function(req, res, _) {
     res.status(404);
     res.status(404).type("json").json({"err": "Not Found!", "errno": 404});
 });
